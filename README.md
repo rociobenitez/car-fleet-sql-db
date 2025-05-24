@@ -10,7 +10,7 @@ Este repositorio contiene el diseño, estructura y scripts SQL para una **base d
 ├── script_postgresql.sql   → Versión adaptada a PostgreSQL
 ├── coches.csv              → Dataset con más de 80 coches
 ├── coches.sql              → Archivo de base de datos para MySQL
-├── diagramas-drawio.pdf    → Diagrama E-R completo
+├── diagrams.pdf            → Diagrama E-R completo
 └── README.md
 ```
 
