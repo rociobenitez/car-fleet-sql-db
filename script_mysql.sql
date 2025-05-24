@@ -1,6 +1,6 @@
-CREATE DATABASE cocheskeepcoding;
+CREATE DATABASE coches;
 show databases;
-USE cocheskeepcoding;
+USE coches;
 
 CREATE TABLE aseguradora (
 	id_aseguradora INT NOT NULL AUTO_INCREMENT,
@@ -561,7 +561,7 @@ VALUES
 ('9209KGR',118686,2,'2021-09-02'),
 ('9729KXJ',131978,4,'2021-12-21');
 
-use cocheskeepcoding;
+use coches;
 
 SELECT * FROM coche;
 

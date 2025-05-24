@@ -1,76 +1,76 @@
-create schema if not exists cocheskeepcoding;
+create schema if not exists coches;
 
-create table cocheskeepcoding.aseguradora (
+create table coches.aseguradora (
 	id_aseguradora SERIAL primary KEY,
     nombre_aseguradora VARCHAR(50) NOT NULL
 );
 
-insert into cocheskeepcoding.aseguradora(nombre_aseguradora)
+insert into coches.aseguradora(nombre_aseguradora)
 values ('Allianz'), ('Axa'), ('Mapfre'), ('Generali');
 
-create table cocheskeepcoding.seguro (
+create table coches.seguro (
     id_seguro SERIAL PRIMARY KEY,
     n_poliza INT NOT NULL,
     id_aseguradora INT NOT NULL,
     fecha_alta_seguro DATE NOT NULL,
-    FOREIGN KEY (id_aseguradora) REFERENCES cocheskeepcoding.aseguradora (id_aseguradora)
+    FOREIGN KEY (id_aseguradora) REFERENCES coches.aseguradora (id_aseguradora)
 );
 
-create table cocheskeepcoding.color (
+create table coches.color (
     id_color SERIAL PRIMARY KEY,
     nombre_color VARCHAR(100) NOT NULL
 );
 
-create table cocheskeepcoding.grupo (
+create table coches.grupo (
     id_grupo SERIAL PRIMARY KEY,
     nombre_grupo VARCHAR(100) NOT NULL
 );
 
-create table cocheskeepcoding.marca (
+create table coches.marca (
     id_marca SERIAL PRIMARY KEY,
     nombre_marca VARCHAR(100) NOT NULL,
     id_grupo INT NOT NULL,
-    FOREIGN KEY (id_grupo) REFERENCES cocheskeepcoding.grupo (id_grupo)
+    FOREIGN KEY (id_grupo) REFERENCES coches.grupo (id_grupo)
 );
 
-create table cocheskeepcoding.modelo (
+create table coches.modelo (
     id_modelo SERIAL PRIMARY KEY,
     nombre_modelo VARCHAR(50) NOT NULL,
     id_marca INT NOT NULL,
-    FOREIGN KEY (id_marca) REFERENCES cocheskeepcoding.marca (id_marca)
+    FOREIGN KEY (id_marca) REFERENCES coches.marca (id_marca)
 );
 
-create table cocheskeepcoding.coche (
+create table coches.coche (
     matricula VARCHAR(10) NOT NULL PRIMARY KEY,
     id_modelo INT NOT NULL,
     id_color INT NOT NULL,
     fecha_compra DATE NOT NULL,
     kms_totales INT NOT NULL,
-    FOREIGN KEY (id_modelo) REFERENCES cocheskeepcoding.modelo (id_modelo),
-    FOREIGN KEY (id_color) REFERENCES cocheskeepcoding.color (id_color)
+    FOREIGN KEY (id_modelo) REFERENCES coches.modelo (id_modelo),
+    FOREIGN KEY (id_color) REFERENCES coches.color (id_color)
 );
 
-create table cocheskeepcoding.moneda (
+create table coches.moneda (
     id_moneda SERIAL PRIMARY KEY,
     nombre_moneda VARCHAR(100) NOT NULL,
     simbolo_moneda VARCHAR(10) NOT NULL
 );
 
-create table cocheskeepcoding.revision (
+create table coches.revision (
     id_revision SERIAL PRIMARY KEY,
     matricula VARCHAR(10) NOT NULL,
     kms_revision INT NOT NULL,
     fecha_revision DATE NOT NULL,
     importe_revision FLOAT NOT NULL,
     id_moneda INT NOT NULL,
-    FOREIGN KEY (matricula) REFERENCES cocheskeepcoding.coche (matricula),
-    FOREIGN KEY (id_moneda) REFERENCES cocheskeepcoding.moneda (id_moneda)
+    FOREIGN KEY (matricula) REFERENCES coches.coche (matricula),
+    FOREIGN KEY (id_moneda) REFERENCES coches.moneda (id_moneda)
 );
 
-insert into cocheskeepcoding.grupo(nombre_grupo)
+insert into coches.grupo(nombre_grupo)
 values ('Renault-Nissan-Mitsubishi Alliance'), ('PSA Peugeot S.A.'), ('Hyundai Motor Group');
 
-insert into cocheskeepcoding.marca(nombre_marca, id_grupo)
+insert into coches.marca(nombre_marca, id_grupo)
 values
 ('Kia', 3),
 ('Hyundai', 3),
@@ -84,7 +84,7 @@ values
 -- select * from marca;
 
 
-insert into cocheskeepcoding.modelo(nombre_modelo, id_marca)
+insert into coches.modelo(nombre_modelo, id_marca)
 values
 ('Clio', 5),
 ('DS4', 3),
@@ -106,24 +106,24 @@ values
 -- select * from modelo;
 
 
-alter table cocheskeepcoding.moneda
+alter table coches.moneda
 add codigo VARCHAR(3);
 
-insert into cocheskeepcoding.moneda(nombre_moneda, simbolo_moneda, codigo)
+insert into coches.moneda(nombre_moneda, simbolo_moneda, codigo)
 values
 ('Euro', '€', 'EUR'),
 ('Dólar', '$', 'USD'),
 ('Peso Colombiano', '$', 'COP'),
 ('Peso Mexicano', '$', 'MXN');
 
-insert into cocheskeepcoding.color(nombre_color)
+insert into coches.color(nombre_color)
 values ('Rojo'), ('Gris Plateado'), ('Blanco'), ('Negro'), ('Verde'), ('Azul');
 
 
 -- select * from color;
 
 
-insert into cocheskeepcoding.coche(matricula, id_modelo, id_color, fecha_compra, kms_totales)
+insert into coches.coche(matricula, id_modelo, id_color, fecha_compra, kms_totales)
 values
 ('0007HHR', 7, 5, '2014-03-30', 37686),
 ('0326HRM', 13, 2, '2014-06-28', 105374),
@@ -229,7 +229,7 @@ values
 
 -- select * from moneda;
 
-insert into cocheskeepcoding.revision(matricula, kms_revision, fecha_revision, importe_revision, id_moneda)
+insert into coches.revision(matricula, kms_revision, fecha_revision, importe_revision, id_moneda)
 values
 ('7343FRT',29564,'2020-07-07',1076030,3),
 ('2438GSV',12028,'2010-05-13',734.7,2),
@@ -394,14 +394,14 @@ values
 -- select * from aseguradora;
 
 
-alter table cocheskeepcoding.seguro
+alter table coches.seguro
 add column matricula VARCHAR(10);
 
-alter table cocheskeepcoding.seguro
+alter table coches.seguro
 add CONSTRAINT fk_matricula
-FOREIGN KEY (matricula) REFERENCES cocheskeepcoding.coche(matricula);
+FOREIGN KEY (matricula) REFERENCES coches.coche(matricula);
 
-insert into cocheskeepcoding.seguro(matricula,n_poliza,id_aseguradora,fecha_alta_seguro)
+insert into coches.seguro(matricula,n_poliza,id_aseguradora,fecha_alta_seguro)
 values
 ('2066BYF',105112,2,'1999-03-14'),
 ('6335BFK',190383,2,'1999-06-06'),
@@ -574,15 +574,15 @@ select distinct ON(c.matricula)
   s.n_poliza AS Numero_Poliza,
   a.nombre_aseguradora AS Aseguradora
 FROM
-  cocheskeepcoding.coche AS c
-INNER JOIN cocheskeepcoding.modelo AS m ON c.id_modelo = m.id_modelo
-INNER JOIN cocheskeepcoding.marca AS ma ON m.id_marca = ma.id_marca
-INNER JOIN cocheskeepcoding.grupo AS g ON ma.id_grupo = g.id_grupo
-INNER JOIN cocheskeepcoding.color AS col ON c.id_color = col.id_color
+  coches.coche AS c
+INNER JOIN coches.modelo AS m ON c.id_modelo = m.id_modelo
+INNER JOIN coches.marca AS ma ON m.id_marca = ma.id_marca
+INNER JOIN coches.grupo AS g ON ma.id_grupo = g.id_grupo
+INNER JOIN coches.color AS col ON c.id_color = col.id_color
 INNER JOIN (
   SELECT DISTINCT ON (matricula) matricula, n_poliza, id_aseguradora
-  FROM cocheskeepcoding.seguro
+  FROM coches.seguro
   ORDER BY matricula, fecha_alta_seguro DESC
 ) AS s ON c.matricula = s.matricula
-INNER JOIN cocheskeepcoding.aseguradora AS a ON s.id_aseguradora = a.id_aseguradora
+INNER JOIN coches.aseguradora AS a ON s.id_aseguradora = a.id_aseguradora
 ORDER BY c.matricula, c.fecha_compra DESC;
